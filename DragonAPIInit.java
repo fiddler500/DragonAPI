@@ -216,11 +216,6 @@ public class DragonAPIInit extends DragonAPIMod {
 		this.increaseChunkCap();
 		//this.increaseBiomeCount(); world save stores biome as bytes, so 255 is cap
 
-		BannedItemReader.instance.initWith("BanItem");
-		BannedItemReader.instance.initWith("ItemBan");
-		BannedItemReader.instance.initWith("TekkitCustomizerData");
-		BannedItemReader.instance.initWith("TekkitCustomizer");
-
 		this.basicSetup(evt);
 
 		ReikaPacketHelper.registerPacketHandler(instance, packetChannel, new APIPacketHandler());
@@ -318,9 +313,6 @@ public class DragonAPIInit extends DragonAPIMod {
 
 		FMLInterModComms.sendMessage("Waila", "register", "Reika.DragonAPI.ModInteract.LegacyWailaHelper.registerObjects");
 
-		if (DragonOptions.UNNERFOBSIDIAN.getState())
-			Blocks.obsidian.setResistance(2000);
-
 		if (ModList.COMPUTERCRAFT.isLoaded()) {
 			try {
 				Class interf = Class.forName("dan200.computercraft.api.peripheral.IPeripheralProvider");
@@ -336,47 +328,6 @@ public class DragonAPIInit extends DragonAPIMod {
 			}
 		}
 
-		PatreonController.instance.addPatron(this, "Dale Mahalko / Plawerth", 1);
-		PatreonController.instance.addPatron(this, "Lasse Knudsen", 40);
-		PatreonController.instance.addPatron(this, "Jason Watson", 10);
-		PatreonController.instance.addPatron(this, "frogfigther the derp", "a52abe43-ee2a-482a-a99c-51d8203e49d3", 10);
-		PatreonController.instance.addPatron(this, "Fizyxnrd", 2);
-		PatreonController.instance.addPatron(this, "Jakbruce2012", "8286f5c2-3062-4034-a72b-21dde6dcaa1a", 10);
-		PatreonController.instance.addPatron(this, "Michael Luke", 5);
-		PatreonController.instance.addPatron(this, "Andrew Jones", 10);
-		PatreonController.instance.addPatron(this, "Steven Kane", 40);
-		PatreonController.instance.addPatron(this, "motsop", 1);
-		PatreonController.instance.addPatron(this, "Demethan", "d0ffe97b-3370-4135-8218-4399e7ec5184", 5); //Luc Levesque
-		PatreonController.instance.addPatron(this, "David Harris", 1);
-		PatreonController.instance.addPatron(this, "Michael Vaarning", 5);
-		PatreonController.instance.addPatron(this, "Renato", 1);
-		PatreonController.instance.addPatron(this, "BevoLJ", "1d6a73e8-cf9e-45e9-aada-c2e1609e1f77", 5);
-		PatreonController.instance.addPatron(this, "brian allred", 1);
-		PatreonController.instance.addPatron(this, "Joshua Kubiak", 5);
-		PatreonController.instance.addPatron(this, "Paul Luhman", 1);
-		PatreonController.instance.addPatron(this, "John Paul Douglass", 10);
-		PatreonController.instance.addPatron(this, "Jon M", "3c1c793a-a29d-4822-8e35-6be630315277", 5);
-		PatreonController.instance.addPatron(this, "Christhereaper", 5);
-		PatreonController.instance.addPatron(this, "Havgood", 10);
-		PatreonController.instance.addPatron(this, "David Carlson", 10);
-		PatreonController.instance.addPatron(this, "Frederik", 10);
-		PatreonController.instance.addPatron(this, "Tommy Miller", 10);
-		PatreonController.instance.addPatron(this, "Josh O'Connor-Chen", 10);
-		PatreonController.instance.addPatron(this, "Ariaxis", "bef0a130-c4f5-4239-bd6b-a19e24802120", 30);
-		PatreonController.instance.addPatron(this, "Dawson Dimmick", 25);
-		PatreonController.instance.addPatron(this, "Polymorph", "474c622e-80cb-4daa-b2c2-562c5d85aa4c", 10);
-		PatreonController.instance.addPatron(this, "SourC00lguy", "c0f67a07-a8aa-4044-a223-fb5640778c41", 1);
-		PatreonController.instance.addPatron(this, "DorinnB", "1a4c37c8-de99-4960-8157-90dc28ef4c65", 1);
-		PatreonController.instance.addPatron(this, "Kotaro_MC", "4e40b5a3-fa82-4496-acf2-d2fadeb5bf5d", 40);
-		PatreonController.instance.addPatron(this, "AnotherDeadBard", "147aac9c-c0d2-4273-a6cc-f272f5b2ae13", 5);
-		PatreonController.instance.addPatron(this, "Haggle1996", "bb7c2ac3-72aa-4ad8-8e00-4e0fb67a51ec", 10);
-		PatreonController.instance.addPatron(this, "acnotalpha", "dc7496be-2408-4c7e-a65e-6beb53355fa7", 10); //Jeremiah Winsley
-		PatreonController.instance.addPatron(this, "Lavious", "7fb32de9-4d98-4d1f-9264-43bd1edf0ae0", 1);
-		PatreonController.instance.addPatron(this, "quok98", "f573f6a0-9e08-482a-9985-29c5bb89c4f4", 10); //Rich Edelman
-		PatreonController.instance.addPatron(this, "rxiv", "1cb1da91-d3ed-4c10-9506-ca27fd480634", 5);
-
-		CommandableUpdateChecker.instance.checkAll();
-
 		this.finishTiming();
 	}
 
@@ -387,8 +338,6 @@ public class DragonAPIInit extends DragonAPIMod {
 
 		ReikaRegistryHelper.loadNames();
 
-		PackModificationTracker.instance.loadAll();
-
 		this.loadHandlers();
 
 		this.alCompat();
@@ -397,15 +346,7 @@ public class DragonAPIInit extends DragonAPIMod {
 
 		//ReikaPacketHelper.postInitPipelines();
 
-		BiomeCollisionTracker.instance.check();
-		PotionCollisionTracker.instance.check();
-		VanillaIntegrityTracker.instance.check();
-
-		CompatibilityTracker.instance.test();
-
 		ReikaPotionHelper.loadBadPotions();
-
-		IntegrityChecker.instance.testIntegrity();
 
 		ReikaOreHelper.refreshAll();
 		ModOreList.initializeAll();
@@ -421,10 +362,6 @@ public class DragonAPIInit extends DragonAPIMod {
 		ReikaJavaLibrary.initClass(ReikaThaumHelper.class);
 		ReikaJavaLibrary.initClass(SmelteryRecipeHandler.class);
 		ReikaJavaLibrary.initClass(TwilightForestLootHooks.class);
-
-		if (MTInteractionManager.isMTLoaded()) {
-			MinetweakerHooks.instance.registerAll();
-		}
 
 		this.finishTiming();
 	}
@@ -448,9 +385,6 @@ public class DragonAPIInit extends DragonAPIMod {
 		evt.registerServerCommand(new EntityListCommand());
 		evt.registerServerCommand(new FindTilesCommand());
 		evt.registerServerCommand(new ClearItemsCommand());
-
-		if (MTInteractionManager.isMTLoaded())
-			MTInteractionManager.instance.scanAndRevert();
 	}
 
 	@SubscribeEvent
