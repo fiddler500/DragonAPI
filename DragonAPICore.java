@@ -32,8 +32,6 @@ public class DragonAPICore {
 
 	protected static final Random rand = new Random();
 
-	private static final boolean reika = calculateReikasComputer();
-
 	public static final String last_API_Version = "@MAJOR_VERSION@"+"@MINOR_VERSION@";
 
 	public static boolean debugtest = false;
@@ -75,54 +73,12 @@ public class DragonAPICore {
 		return s;
 	}
 
-	private static boolean calculateReikasComputer() {
-		try {
-			String username = System.getProperty("user.name");
-			boolean win = System.getProperty("os.name").equals("Windows 7");
-			int cpus = Runtime.getRuntime().availableProcessors();
-			String cpu = System.getProperty("os.arch");
-			long diskSize = new File("c:").getTotalSpace();
-
-			if (win && "amd64".equals(cpu)) {
-				if (diskSize == 484964069376L && cpus == 4 && "RadicalOne".equals(username))
-					return true;
-				if (diskSize == 119926681600L && cpus == 8 && "Reika".equals(username))
-					return true;
-			}
-			return false;
-		}
-		catch (Throwable e) {
-			return false;
-		}
-	}
-
 	public static boolean isReikasComputer() {
-		return reika;
-	}
-
-	static {
-		if (isReikasComputer())
-			ReikaJavaLibrary.pConsole("DRAGONAPI: Loading on Reika's computer; Dev features enabled.");
-
-		//ReikaMathCacher.initalize();
-		validateForgeVersions();
+		return true;
 	}
 
 	protected static Side getSide() {
 		return FMLCommonHandler.instance().getEffectiveSide();
-	}
-
-	private static void validateForgeVersions() {
-		int major = ForgeVersion.majorVersion;
-		int minor = ForgeVersion.minorVersion;
-		int rev = ForgeVersion.revisionVersion;
-		int build = ForgeVersion.buildVersion;
-
-		int recbuild = 1291;
-		if (build < recbuild) {
-			ReikaJavaLibrary.pConsole("DRAGONAPI: The version of Forge you are using is compatible but not recommended.");
-			ReikaJavaLibrary.pConsole(String.format("Consider updating to at least %d.%d.%d.%d.", major, minor, rev, recbuild));
-		}
 	}
 
 	public static boolean isOnActualServer() {
