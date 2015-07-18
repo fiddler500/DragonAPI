@@ -8,3 +8,6 @@ This library relies on MinecraftForge!
 Update from fiddler500:
 
 This version of DragonAPI has been stripped of all DRM and anti-mod code, and is now released under full GPL license! Modpacks can do what you want!
+
+
+Best of all, not Reika's!
