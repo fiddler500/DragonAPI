@@ -99,33 +99,6 @@ public abstract class DragonAPIMod {
 	protected final void basicSetup(FMLPreInitializationEvent evt) {
 		MinecraftForge.EVENT_BUS.register(this);
 		ReikaRegistryHelper.setupModData(this, evt);
-		CommandableUpdateChecker.instance.registerMod(this);
-	}
-
-	protected final void verifyInstallation() {
-		this.verifyVersions();
-		if (this.getModFile().getName().endsWith(".jar.zip"))
-			throw new JarZipException(this);
-		this.verifyHash();
-	}
-
-	private void verifyHash() {
-		if (this.getModVersion().isCompiled()) {
-			try {
-				JarFile jf = new JarFile(this.getModFile());
-				InputStream folder = ReikaFileReader.getFileInsideJar(jf, ReikaJavaLibrary.getTopLevelPackage(this.getClass())+"/");
-				String hash = "@TEMPHASH@";//ReikaFileReader.getHash(folder, HashType.SHA256);
-				Manifest mf = jf.getManifest();
-				if (mf == null)
-					throw new InvalidBuildException(this, this.getModFile());
-				String attr = mf.getMainAttributes().getValue("ModHash");
-				if (attr == null || hash == null || !hash.equals(attr))
-					throw new InvalidBuildException(this, this.getModFile());
-			}
-			catch (IOException e) {
-				throw new InvalidBuildException(this, this.getModFile());
-			}
-		}
 	}
 
 	protected final URL getClassFile() {
@@ -138,31 +111,6 @@ public abstract class DragonAPIMod {
 
 	protected File getModFile() {
 		return this.getModContainer().getSource();
-	}
-
-	private final void verifyVersions() {
-		ModVersion mod = this.getModVersion();
-		if (mod.verify()) {
-			if (mod.majorVersion != apiVersion.majorVersion || mod.isNewerMinorVersion(apiVersion)) {
-				throw new APIMismatchException(this, mod, apiVersion, DragonAPICore.last_API_Version);
-			}
-			HashMap<String, String> map = this.getDependencies();
-			if (map != null) {
-				for (String key : map.keySet()) {
-					String req = map.get(key);
-					ModVersion has = modVersions.get(key);
-					if (has == null) {
-						throw new MissingDependencyException(this, key);
-					}
-					else if (!has.isCompiled()) {
-
-					}
-					else if (!req.equals(has.toString())) {
-						throw new VersionMismatchException(this, mod, key, has, req);
-					}
-				}
-			}
-		}
 	}
 
 	protected HashMap<String, String> getDependencies() {
